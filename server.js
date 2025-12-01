@@ -17,6 +17,19 @@ let customers = [
   { id: 5, name: 'Eve Martinez', email: 'eve@cloudnine.com', company: 'Cloud Nine', status: 'active' }
 ];
 
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Customer API is running',
+    timestamp: new Date().toISOString() 
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 // GET all customers
 app.get('/api/customers', (req, res) => {
   res.json({ success: true, count: customers.length, data: customers });
@@ -78,13 +91,9 @@ app.delete('/api/customers/:id', (req, res) => {
   res.json({ success: true, data: deleted[0] });
 });
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-// Start server
-app.listen(PORT, () => {
+// IMPORTANT: Listen on 0.0.0.0 for containers!
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Customer API running on port ${PORT}`);
-  console.log(`📍 http://localhost:${PORT}/api/customers`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🌐 Listening on 0.0.0.0:${PORT}`);
 });
