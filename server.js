@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Sample data
 let customers = [
-  { id: 1, name: 'Alice Johnson', email: 'alice@acmecorp.com', company: 'Acme Corp', status: 'active' },
+  { id: 1, name: 'Alia Johnson', email: 'alice@acmecorp.com', company: 'Acme Corp', status: 'active' },
   { id: 2, name: 'Bob Smith', email: 'bob@techstart.io', company: 'TechStart', status: 'active' },
   { id: 3, name: 'Charlie Brown', email: 'charlie@innovate.com', company: 'Innovate Inc', status: 'inactive' },
   { id: 4, name: 'Diana Prince', email: 'diana@wondertech.com', company: 'WonderTech', status: 'active' },
@@ -89,6 +89,11 @@ app.delete('/api/customers/:id', (req, res) => {
   
   const deleted = customers.splice(index, 1);
   res.json({ success: true, data: deleted[0] });
+});
+
+app.get('/api/customers/status/:status', (req, res) => {
+  const filtered = customers.filter(c => c.status === req.params.status);
+  res.json({ success: true, count: filtered.length, data: filtered });
 });
 
 // IMPORTANT: Listen on 0.0.0.0 for containers!
